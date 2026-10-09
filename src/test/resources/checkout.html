@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Form Validation</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 450px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #cccccc;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333333;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #2878d0;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #result {
+            text-align: center;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Checkout Form</h2>
+
+        <form id="checkoutForm">
+
+            <label for="name">Full Name</label>
+            <input id="name" name="name" type="text" required>
+
+            <label for="email">Email Address</label>
+            <input id="email" name="email" type="email" required>
+
+            <label for="phone">Phone Number</label>
+            <input id="phone" name="phone" type="tel"
+                   pattern="[0-9]{10}" required>
+
+            <label for="address">Delivery Address</label>
+            <textarea id="address" name="address"
+                      required></textarea>
+
+            <label for="postal">Postal Code</label>
+            <input id="postal" name="postal" type="text"
+                   pattern="[0-9]{6}" required>
+
+            <button type="submit">Place Order</button>
+
+        </form>
+
+        <p id="result" role="status"></p>
+    </div>
+
+    <script>
+        document.getElementById("checkoutForm")
+            .addEventListener("submit", function(event) {
+
+                event.preventDefault();
+
+                document.getElementById("result").textContent =
+                    "Order placed successfully!";
+            });
+    </script>
+</body>
+</html>

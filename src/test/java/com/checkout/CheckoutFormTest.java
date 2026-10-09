@@ -8,6 +8,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -19,8 +21,15 @@ public class CheckoutFormTest {
 
     @BeforeMethod
     public void setUp() {
-        driver = new ChromeDriver();
 
+        // Configure Chrome for Jenkins automation
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new");
+        options.addArguments("--window-size=1920,1080");
+
+        driver = new ChromeDriver(options);
+
+        // Open the checkout HTML file
         String filePath = Paths.get(
                 "src", "test", "resources", "checkout.html"
         ).toAbsolutePath().toUri().toString();
@@ -28,7 +37,9 @@ public class CheckoutFormTest {
         driver.get(filePath);
     }
 
+    // Check whether the checkout form is valid
     private boolean isFormValid() {
+
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
         return (Boolean) js.executeScript(
@@ -36,7 +47,9 @@ public class CheckoutFormTest {
         );
     }
 
+    // Enter valid checkout details
     private void fillValidDetails() {
+
         driver.findElement(By.id("name"))
                 .sendKeys("Test User");
 
@@ -56,6 +69,7 @@ public class CheckoutFormTest {
     // Test Case 1: Empty form validation
     @Test
     public void testEmptyForm() {
+
         Assert.assertFalse(
                 isFormValid(),
                 "Empty form should not be valid"
@@ -65,6 +79,7 @@ public class CheckoutFormTest {
     // Test Case 2: Invalid email validation
     @Test
     public void testInvalidEmail() {
+
         fillValidDetails();
 
         WebElement email = driver.findElement(By.id("email"));
@@ -80,6 +95,7 @@ public class CheckoutFormTest {
     // Test Case 3: Invalid phone validation
     @Test
     public void testInvalidPhone() {
+
         fillValidDetails();
 
         WebElement phone = driver.findElement(By.id("phone"));
@@ -95,6 +111,7 @@ public class CheckoutFormTest {
     // Test Case 4: Invalid postal code validation
     @Test
     public void testInvalidPostalCode() {
+
         fillValidDetails();
 
         WebElement postal = driver.findElement(By.id("postal"));
@@ -110,6 +127,7 @@ public class CheckoutFormTest {
     // Test Case 5: Valid checkout
     @Test
     public void testValidCheckout() {
+
         fillValidDetails();
 
         Assert.assertTrue(
@@ -131,8 +149,12 @@ public class CheckoutFormTest {
         );
     }
 
+    // Close Chrome after each test
     @AfterMethod(alwaysRun = true)
     public void tearDown() {
-       
+
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
